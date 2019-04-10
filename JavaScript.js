@@ -1,42 +1,64 @@
+const container = document.getElementById("container");
+
 class Timer {
-    constructor(countdownTime, autoStart, interval){
-        this.countdownTime = countdownTime;
+    constructor(countdownMin,countdownSec, autoStart, interval){
+        this.countdownMin = countdownMin;
+        this.countdownSec = countdownSec;
         this.autoStart = autoStart;
         this.interval = interval;
-        this.timer = document.getElementById("timer_top");
-        this.timerClass = document.getElementsByClassName("timer");
-        this.width = this.timer.offsetWidth;
-        this.but = document.getElementById("button_top");
         this.render();
     }
-    render(){
-        if (this.autoStart) {
-            console.log("true");
-            console.log(this.interval);
-            this.lifeLineTimer();
-        } else{
-            console.log("false");
-        }
+    createCounter(){
+        this.counter = document.createElement("div");
+        this.counter.textContent = this.countdownMin+":"+this.countdownSec;
+        // this.counter.textContent = `${countdownMin}:${countdownSec}`;
+        this.counter.classList.add('count');
+        return this.counter;
+    }
+    createButton(){
+        this.button = document.createElement("button");
+        this.button.classList.add('button');
+        this.button.textContent= "start";
+        return this.button;
+    }
+    createline(){
+        this.line = document.createElement("div");
+        this.line.classList.add('line');
+        return this.line;
     }
     lifeLineTimer(){
-        console.log("timer", this.timer);
-        console.log("timerClass", this.timerClass);
-        console.log("offsetWidth", this.timer.offsetWidth);
-        console.log("clientWidth", this.timerClass[1].clientWidth);
+        this.width = this.line.offsetWidth;
+        console.log(this.width);
         this.interval = setInterval(()=>{
-            const currentWidth = this.timer.offsetWidth;
-            console.log("currentWidth" ,currentWidth);
-            const percent = (this.width / 50);
-            console.log("percent", percent);
-            this.timer.style.width = currentWidth - percent + "px";
-            console.log(this.timer.style.width);
-            if (currentWidth - percent < 0){
-                clearInterval(this.interval);
-            }
-            // if ()
-        },this.interval);
+            const currentWidth = this.line.offsetWidth;
+            const percent = (this.width / 20);
+            this.line.style.width = currentWidth - percent + "px";
+        }, this.interval);
+    }
+    changeCondition(){
+        if(this.button.textContent === "start"){
+            this.button.textContent = "stop";
+            this.lifeLineTimer();
+        }else if(this.button.textContent === "stop"){
+            this.button.textContent = "start";
+            clearInterval(this.interval);
+        }
+    }
+    render(){
+        container.append(this.createCounter());
+        container.append(this.createButton());
+        container.append(this.createline());
+
+        this.button.addEventListener("click", this.changeCondition.bind(this));
+
+        // if (this.autoStart) {
+        //     console.log("true");
+        //     console.log(this.interval);
+        //     this.lifeLineTimer();
+        // } else{
+        //     console.log("false");
+        // }
     }
 }
-
-const TimerFirst = new Timer(45, true, 1000);
-// TimerFirst.StartWork();
+new Timer(00,45, true, 1000);
+new Timer(00,45, true, 1000);
