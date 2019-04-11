@@ -18,7 +18,11 @@ class Timer {
     createButton(){
         this.button = document.createElement("button");
         this.button.classList.add('button');
-        this.button.textContent= "start";
+        if (this.autoStart) {
+            this.button.textContent= "start";
+        } else{
+            this.button.textContent= "stop";
+        }
         return this.button;
     }
     createline(){
@@ -27,12 +31,12 @@ class Timer {
         return this.line;
     }
     lifeLineTimer(){
-        this.width = this.line.offsetWidth;
-        console.log(this.width);
-        this.interval = setInterval(()=>{
+        console.log("--this.width: ", this.width);
+        this.progres = setInterval(()=>{
             const currentWidth = this.line.offsetWidth;
-            const percent = (this.width / 20);
-            this.line.style.width = currentWidth - percent + "px";
+            console.log("currentWidth:", currentWidth);
+            console.log("percent:", this.percent);
+            this.line.style.width = currentWidth - this.percent + "px";
         }, this.interval);
     }
     changeCondition(){
@@ -41,24 +45,18 @@ class Timer {
             this.lifeLineTimer();
         }else if(this.button.textContent === "stop"){
             this.button.textContent = "start";
-            clearInterval(this.interval);
+            clearInterval(this.progres);
         }
     }
     render(){
         container.append(this.createCounter());
         container.append(this.createButton());
         container.append(this.createline());
-
-        this.button.addEventListener("click", this.changeCondition.bind(this));
-
-        // if (this.autoStart) {
-        //     console.log("true");
-        //     console.log(this.interval);
-        //     this.lifeLineTimer();
-        // } else{
-        //     console.log("false");
-        // }
+        this.width = this.line.offsetWidth;
+        this.percent = (this.width / 20);
+        this.changeCondition();
+            this.button.addEventListener("click", this.changeCondition.bind(this));
     }
 }
-new Timer(00,45, true, 1000);
-new Timer(00,45, true, 1000);
+new Timer(00,45, false, 1000);
+new Timer(00,45, true, 500);
