@@ -1,11 +1,12 @@
 const container = document.getElementById("container");
 
 class Timer {
-    constructor(countdownMin,countdownSec, autoStart, interval){
+    constructor(countdownMin,countdownSec, autoStart, lineInterval, timeInterval){
         this.countdownMin = countdownMin;
         this.countdownSec = countdownSec;
         this.autoStart = autoStart;
-        this.interval = interval;
+        this.lineInterval = lineInterval;
+        this.timeInterval = timeInterval;
         this.render();
     }
     createCounter(){
@@ -37,13 +38,14 @@ class Timer {
             console.log("currentWidth:", currentWidth);
             console.log("percent:", this.percent);
             this.line.style.width = currentWidth - this.percent + "px";
-        }, this.interval);
+        }, this.lineInterval);
         console.log("hello");
     }
     countDown() {
         this.countDec = setInterval(() => {
-            this.counter.textContent = this.countdownMin+":"+ --this.countdownSecDec;
-            if (this.countdownSecDec === 0){
+            this.countdownSecDec = this.countdownSecDec - this.timeInterval/1000;
+            this.counter.textContent = this.countdownMin+":"+ this.countdownSecDec;
+            if (this.countdownSecDec === 0|| this.countdownSecDec < 0){
                 this.counter.textContent = this.countdownMin+":"+this.countdownSec;
                 this.countdownSecDec = this.countdownSec;
                 this.button.textContent = "start";
@@ -51,7 +53,7 @@ class Timer {
                 clearInterval(this.progres);
                 clearInterval(this.countDec);
             }
-        }, 1000);
+        }, this.timeInterval);
         return this.countDec;
     }
     changeCondition(){
@@ -71,10 +73,10 @@ class Timer {
         container.append(this.createline());
         this.width = this.line.offsetWidth;
         this.countdownSecDec = this.countdownSec;
-        this.percent = (this.width / this.countdownSec / (1 / (this.interval/1000)));
+        this.percent = (this.width / this.countdownSec / (1 / (this.lineInterval/1000)));
         this.changeCondition();
         this.button.addEventListener("click", this.changeCondition.bind(this));
     }
 }
-new Timer(00,10, false, 50);
-new Timer(00,45, true, 2000);
+new Timer(00,10, false, 50, 1000);
+new Timer(00,15, true, 1000, 2000);
