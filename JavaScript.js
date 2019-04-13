@@ -38,13 +38,30 @@ class Timer {
             console.log("percent:", this.percent);
             this.line.style.width = currentWidth - this.percent + "px";
         }, this.interval);
+        console.log("hello");
+    }
+    countDown() {
+        this.countDec = setInterval(() => {
+            this.counter.textContent = this.countdownMin+":"+ --this.countdownSecDec;
+            if (this.countdownSecDec === 0){
+                this.counter.textContent = this.countdownMin+":"+this.countdownSec;
+                this.countdownSecDec = this.countdownSec;
+                this.button.textContent = "start";
+                this.line.style.width = this.width+"px";
+                clearInterval(this.progres);
+                clearInterval(this.countDec);
+            }
+        }, 1000);
+        return this.countDec;
     }
     changeCondition(){
         if(this.button.textContent === "start"){
             this.button.textContent = "stop";
+            this.countDown();
             this.lifeLineTimer();
         }else if(this.button.textContent === "stop"){
             this.button.textContent = "start";
+            clearInterval(this.countDec);
             clearInterval(this.progres);
         }
     }
@@ -53,10 +70,11 @@ class Timer {
         container.append(this.createButton());
         container.append(this.createline());
         this.width = this.line.offsetWidth;
-        this.percent = (this.width / 20);
+        this.countdownSecDec = this.countdownSec;
+        this.percent = (this.width / this.countdownSec / (1 / (this.interval/1000)));
         this.changeCondition();
-            this.button.addEventListener("click", this.changeCondition.bind(this));
+        this.button.addEventListener("click", this.changeCondition.bind(this));
     }
 }
-new Timer(00,45, false, 1000);
-new Timer(00,45, true, 500);
+new Timer(00,10, false, 50);
+new Timer(00,45, true, 2000);
