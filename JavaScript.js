@@ -78,5 +78,5 @@ class Timer {
         this.button.addEventListener("click", this.changeCondition.bind(this));
     }
 }
-new Timer(00,10, false, 50, 1000);
-new Timer(00,15, true, 1000, 2000);
+new Timer(00, 10, false, 50, 1000);
+new Timer(00, 16, true, 1000, 2000);
