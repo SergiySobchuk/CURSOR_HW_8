@@ -32,14 +32,10 @@ class Timer {
         return this.line;
     }
     lifeLineTimer(){
-        console.log("--this.width: ", this.width);
         this.progres = setInterval(()=>{
             const currentWidth = this.line.offsetWidth;
-            console.log("currentWidth:", currentWidth);
-            console.log("percent:", this.percent);
             this.line.style.width = currentWidth - this.percent + "px";
         }, this.lineInterval);
-        console.log("hello");
     }
     countDown() {
         this.countDec = setInterval(() => {
@@ -78,5 +74,5 @@ class Timer {
         this.button.addEventListener("click", this.changeCondition.bind(this));
     }
 }
-new Timer(00,10, false, 50, 1000);
-new Timer(00,15, true, 1000, 2000);
+new Timer(00,10, false, 100, 1000);
+new Timer(00,25, true, 1000, 2000);
